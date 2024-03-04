@@ -1,4 +1,4 @@
-const { Schema, Model, model } = require("mongoose");
+const { Schema, model } = require("mongoose");
 const { createHash, randomBytes } = require("crypto");
 const { createToken } = require("../services/authentication");
 
