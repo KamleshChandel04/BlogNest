@@ -1,7 +1,9 @@
 const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/user");
+const { Auth } = require("./middleware/auth");
 const app = express();
 
 //config .env file
@@ -14,11 +16,16 @@ app.set("views", path.resolve("./views"));
 
 //For Parsing Form Data
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+app.use(Auth("token"));
 
 //Global route that render home page from views folder
 app.use("/user", userRoutes);
 app.get("/", (req, res) => {
-    return res.render("home");
+    return res.render("home", {
+        user: req.user,
+    });
 });
 
 //connect to Mogno DB
