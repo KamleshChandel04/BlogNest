@@ -5,8 +5,9 @@ dotenv.config();
 function createToken(user) {
     const payload = {
         _id: user._id,
+        name : user.fullName,
         email: user.email,
-        profileImageURL: user.profileImageURL,
+        profileImageURL: user.profileImageUrl,
         role: user.role,
     };
 
