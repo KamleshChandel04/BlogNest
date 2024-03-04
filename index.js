@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/user");
+const blogRoutes = require("./routes/blog");
 const { Auth } = require("./middleware/auth");
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(Auth("token"));
 
 //Global route that render home page from views folder
 app.use("/user", userRoutes);
+app.use("/blog", blogRoutes);
 app.get("/", (req, res) => {
     return res.render("home", {
         user: req.user,
