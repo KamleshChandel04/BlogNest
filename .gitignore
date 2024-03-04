@@ -1,3 +1,6 @@
 node_modules
 .env
 README.md
+public
+public/images
+public/uploads

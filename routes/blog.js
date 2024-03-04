@@ -8,11 +8,13 @@ const path = require("path");
 //Creating Storage using Multer
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        const userDir = path.resolve(`../public/uploads/${req.user._id}`);
-        // Ensure the user's directory exists, create it if it doesn't
-        fs.mkdirSync(userDir, { recursive: true });
+        // Dynamic destination path based on user's name
+        const userUploadDir = path.resolve(`./public/uploads/${req.user.name}`);
+        if (!fs.existsSync(userUploadDir)) {
+            fs.mkdirSync(userUploadDir, { recursive: true });
+        }
         //callback funtion (error , result(path))
-        cb(null, userDir);
+       cb(null, userUploadDir);
     },
     filename: function (req, file, cb) {
         //Creating a unique filename using Date.now()
