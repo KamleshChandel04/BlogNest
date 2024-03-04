@@ -1,0 +1,34 @@
+const express = require("express");
+const User = require("../models/user");
+
+const handleSignIn = async (req, res) => {
+    const {email , password} = req.body;
+    try {
+       const user =  User.matchPassword(email , password);
+
+       console.log(user);
+       
+       return res.status(200).redirect("/");
+
+    } catch (error) {
+        return res.status(500).send({ message: "Failed to Get User", Problem: "User Not Found! or Incorrect Password!" });
+    }
+};
+
+const handleSignUp = async (req, res) => {
+    const { fullName, email, password } = req.body;
+    try {
+        await User.create({
+            fullName,
+            email,
+            password,
+        });
+        return res.status(201).redirect("/");
+    } catch (error) {
+        return res.status(500).json({ message: "Failed to Create User", Problem: error });
+    }
+
+    
+};
+
+module.exports = { handleSignIn, handleSignUp };
