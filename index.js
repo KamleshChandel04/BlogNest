@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/user");
 const blogRoutes = require("./routes/blog");
 const { Auth } = require("./middleware/auth");
+const Blog = require("./models/blog");
 const app = express();
 
 //config .env file
@@ -20,13 +21,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(Auth("token"));
+app.use(express.static(path.resolve("./public")));
 
 //Global route that render home page from views folder
 app.use("/user", userRoutes);
 app.use("/blog", blogRoutes);
-app.get("/", (req, res) => {
+
+app.get("/", async (req, res) => {
+    const allBlogs = await Blog.find({});
     return res.render("home", {
         user: req.user,
+        blogs: allBlogs,
     });
 });
 
