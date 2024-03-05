@@ -19,9 +19,9 @@ const handleSignUp = async (req, res) => {
             email,
             password,
         });
-        return res.status(201).redirect("/");
+        return res.status(201).redirect("signin");
     } catch (error) {
-        return res.status(500).json({ message: "Failed to Create User", Problem: error });
+        return res.status(500).render("signup" , { message: "Failed to Create User", Problem: error });
     }
 };
 
