@@ -67,6 +67,6 @@ SECRET_KEY = Your Secret Key
 4. **Start the Application**: Run the following command to start the BlogNest application:
 
 ```bash
-npm start
+npm start or npm run dev
 ```
 5. **Access BlogNest**:Open your web browser and navigate to http://localhost:3000 to access BlogNest.
