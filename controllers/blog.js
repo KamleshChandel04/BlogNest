@@ -1,4 +1,5 @@
 const Blog = require("../models/blog");
+const Comment = require("../models/comment");
 
 const handleCreateBlog = async (req, res) => {
     const { title, body } = req.body;
@@ -24,11 +25,25 @@ const handleCreateBlog = async (req, res) => {
 
 const handleGetBlog = async (req, res) => {
     const blog = await Blog.findById(req.params.id).populate("createdBy");
- 
+    const comments = await Comment.find({ blogId: req.params.id }).populate("createdBy");
     return res.render("blog", {
         user: req.user,
         blog,
+        comments,
     });
 };
 
-module.exports = { handleCreateBlog, handleGetBlog };
+const handleCreateComment = async (req, res) => {
+    try {
+        await Comment.create({
+            content: req.body.content,
+            blogId: req.params.blogId,
+            createdBy: req.user._id,
+        });
+        return res.status(201).redirect(`/blog/${req.params.blogId}`);
+    } catch (error) {
+        return res.status(400).send(`Failed to Post Comment : ${error}`);
+    }
+};
+
+module.exports = { handleCreateBlog, handleGetBlog, handleCreateComment };
