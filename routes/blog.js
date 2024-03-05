@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const router = express.Router();
-const { handleCreateBlog } = require("../controllers/blog");
+const { handleCreateBlog, handleGetBlog } = require("../controllers/blog");
 const multer = require("multer");
 const path = require("path");
 
@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
             fs.mkdirSync(userUploadDir, { recursive: true });
         }
         //callback funtion (error , result(path))
-       cb(null, userUploadDir);
+        cb(null, userUploadDir);
     },
     filename: function (req, file, cb) {
         //Creating a unique filename using Date.now()
@@ -37,5 +37,7 @@ router.get("/add-new", (req, res) => {
 });
 
 router.post("/", upload.single("coverImage"), handleCreateBlog);
+
+router.get("/:id", handleGetBlog);
 
 module.exports = router;
