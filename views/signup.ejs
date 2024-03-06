@@ -1,16 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Sign Up</title>
         <%- include('./partials/head.ejs') %>
+        <title>Sign Up | BlogNest</title>
     </head>
     <body>
         <%- include('./partials/nav.ejs') %>
 
-        <div class="container mt-4">
-            <form id="signupForm" action="/user/signup" method="post" autocomplete="off">
+        <div class="container my-4 w-75 mx-auto">
+            <h3 class="mb-4 pb-3 border-bottom">Join BlogNest</h3>
+            <form
+                id="signupForm"
+                action="/user/signup"
+                method="post"
+                autocomplete="off"
+                enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label" for="profileImage">Profile Image</label>
+                    <input type="file" class="form-control" id="profileImage" name="profileImage" />
+                </div>
+
                 <div class="mb-3">
                     <label for="fullName" class="form-label">Full Name</label>
                     <input
@@ -50,28 +59,25 @@
                         id="confirmPassword"
                         placeholder="Confirm Password"
                         name="confirmPassword" />
-                    <div id="passwordMatchError" class="text-danger" style="display: none;">
+                    <div id="passwordMatchError" class="text-danger" style="display: none">
                         Passwords do not match!
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
             </form>
         </div>
 
         <%- include('./partials/scripts.ejs') %>
         <script>
-            document.getElementById("signupForm").addEventListener("submit" , function(event){
+            document.getElementById("signupForm").addEventListener("submit", function (event) {
                 var password = document.getElementById("password").value;
                 var confirmPassword = document.getElementById("confirmPassword").value;
 
-                if(password !== confirmPassword)
-                {
+                if (password !== confirmPassword) {
                     document.getElementById("passwordMatchError").style.display = "block";
                     event.preventDefault();
-                }
-                else if(password === confirmPassword)
-                    document.getElementById("passwordMatchError").style.display = "none";
-            })
+                } else if (password === confirmPassword) document.getElementById("passwordMatchError").style.display = "none";
+            });
         </script>
     </body>
 </html>

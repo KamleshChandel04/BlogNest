@@ -14,19 +14,33 @@ const handleSignIn = async (req, res) => {
 const handleSignUp = async (req, res) => {
     const { fullName, email, password } = req.body;
     try {
-        await User.create({
+        const newUser = await User.create({
             fullName,
             email,
             password,
         });
+        if (req.file) {
+            profileImageUrl = `/images/${req.file.filename}`;
+            const user = await User.findOneAndUpdate(
+                { email },
+                { profileImageUrl },
+                {
+                    new: true,
+                }
+            );
+        }
+
         return res.status(201).redirect("signin");
     } catch (error) {
-        return res.status(500).render("signup" , { message: "Failed to Create User", Problem: error });
+        console.log(error);
+        return res
+            .status(500)
+            .render("signup", { message: "Failed to Create User", Problem: error });
     }
 };
 
-const handleLogOut = async(req , res) =>{
+const handleLogOut = async (req, res) => {
     res.clearCookie("token").redirect("/");
-}
+};
 
-module.exports = { handleSignIn, handleSignUp  , handleLogOut};
+module.exports = { handleSignIn, handleSignUp, handleLogOut };

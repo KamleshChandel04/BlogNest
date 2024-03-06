@@ -1,9 +1,10 @@
 const express = require("express");
 const fs = require("fs");
 const router = express.Router();
-const { handleCreateBlog, handleGetBlog  , handleCreateComment} = require("../controllers/blog");
+const { handleCreateBlog, handleGetBlog  , handleCreateComment, handleBlogEdit} = require("../controllers/blog");
 const multer = require("multer");
 const path = require("path");
+const Blog = require("../models/blog");
 
 //Creating Storage using Multer
 const storage = multer.diskStorage({
@@ -41,5 +42,30 @@ router.get("/:id", handleGetBlog);
 // ------Comments--------
 router.post('/comment/:blogId' , handleCreateComment)
 
+
+//edit and delete routes
+router.get("/edit/:blogId", async (req, res) => {
+    try {
+        console.log(req.params.blogId);
+        const blog = await Blog.findById(req.params.blogId);
+        console.log(blog);
+        return res.render("editBlog", { user: req.user, blog });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+router.get("/delete/:id", async (req, res) => {
+    try {
+        
+        await Blog.findByIdAndDelete(req.params.id);
+        return res.redirect("/");
+    } catch (error) {
+        console.log(error);
+    }
+
+});
+
+router.post("/edit/:id" , handleBlogEdit);
 
 module.exports = router;

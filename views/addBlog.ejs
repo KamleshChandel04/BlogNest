@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <%- include('./partials/head.ejs') %>
-        <title>Add New Blog</title>
+        <title>Add New Blog | BlogNest</title>
     </head>
     <body>
         <%- include('./partials/nav.ejs') %>
@@ -15,8 +15,7 @@
                         type="file"
                         class="form-control"
                         id="coverImage"
-                        name="coverImage"
-                        aria-describedby="coverImage" />
+                        name="coverImage"/>
                 </div>
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
@@ -25,16 +24,16 @@
                         class="form-control"
                         id="title"
                         name="title"
-                        aria-describedby="title"
                         placeholder="Enter Title of Blog" />
                 </div>
                 <div class="mb-3">
-                    <label for="body" class="form-label">Body</label>
+                    <label for="body" class="form-label">Content</label>
                     <textarea
                         class="form-control"
                         placeholder="Your Content Goes Here..."
                         id="body"
-                        name="body"></textarea>
+                        name="body"
+                        cols="30" rows="9"></textarea>
                 </div>
                 <div>
                     <button type="submit" class="btn btn-primary">Post</button>

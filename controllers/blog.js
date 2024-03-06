@@ -19,7 +19,7 @@ const handleCreateBlog = async (req, res) => {
         });
         return res.redirect(`/blog/${blog._id}`);
     } catch (error) {
-        return res.status(400).send(`Failed to Create Blog : ${error}`);
+        return res.render("addBlog", { user: req.user, error: "All fields are mandatory" });
     }
 };
 
@@ -42,8 +42,25 @@ const handleCreateComment = async (req, res) => {
         });
         return res.status(201).redirect(`/blog/${req.params.blogId}`);
     } catch (error) {
-        return res.status(400).send(`Failed to Post Comment : ${error}`);
+        return res.status(400).redirect(`/blog/${req.params.blogId}`);
     }
 };
 
-module.exports = { handleCreateBlog, handleGetBlog, handleCreateComment };
+const handleBlogEdit  = async(req ,res)=>{
+
+    try {
+        
+        const blog = await Blog.findById(req.params.id);
+        
+        blog.title = req.body.title || blog.title;
+        blog.body = req.body.body || blog.body;
+        
+        await blog.save();
+        
+        return res.redirect(`/blog/${blog._id}`);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { handleCreateBlog, handleGetBlog, handleCreateComment , handleBlogEdit };

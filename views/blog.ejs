@@ -2,55 +2,83 @@
 <html lang="en">
     <head>
         <%- include('./partials/head.ejs') %>
-        <title>Blog</title>
+        <title><%= blog.title %> | BlogNest</title>
     </head>
+
     <body>
-        <%- include('./partials/nav.ejs') %>
+        <%- include('./partials/nav') %>
 
-        <div class="container mt-4">
-            <img src="<%= blog.createdBy.profileImageUrl %>" width="50px" />
-            <%= blog.createdBy.fullName %>
-        </div>
+        <div class="container-md my-4 mx-auto max-w-75">
+            <div class="container">
+                <p class="h1 mb-4"><%= blog.title %></p>
 
-        <div class="container mt-4">
-            <h1><%= blog.title %></h1>
-            <img src="<%= blog.coverImageURL %>" width="700px" />
-            <pre class="mt-3"><%= blog.body %></pre>
-        </div>
-
-        <div class="container mt-3">
-            <h3>Comments <% if (comments.length) { %>
-                (<%= comments.length %>)
-            <% } %></h3>
-            <% if (locals.user) { %>
-            <form action="/blog/comment/<%= blog._id %>" method="post" autocomplete="off">
-                <div class="mb-3">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="content"
-                        aria-describedby="content"
-                        placeholder="Write your Comment here..."
-                        name="content" />
+                <div class="mb-4">
+                    <img
+                        src="<%= blog.createdBy.profileImageUrl %>"
+                        alt="Profile Image"
+                        class="img-fluid rounded-circle"
+                        width="40px" />
+                    <span class="ps-2"> <%= blog.createdBy.fullName %> </span>
                 </div>
-                <button type="submit" class="btn btn-primary">Comment</button>
-            </form>
-            <% } else { %>
-                <h4>SignIn To Write Your Comment...</h4>
-            <% } %>
-            <div class="mt-3">
-                <% comments.forEach(comment => { %>
+
+                <% if (locals.user) { %> <% if (user._id==blog.createdBy._id) { %>
+                <div class="mb-4">
+                    <a class="edit me-2" href="/blog/edit/<%= blog._id %>">Edit</a>
+                    <a class="delete" href="/blog/delete/<%= blog._id %>">Delete</a>
+                </div>
+                <% } %> <% } %>
+
                 <div>
-                    <img src="<%= comment.createdBy.profileImageUrl %>" width="50px" />
-                    <%= comment.createdBy.fullName %>
-                    <pre><%= comment.content %></pre>
+                    <img
+                        src="<%= blog.coverImageURL %>"
+                        alt="Cover Image"
+                        class="img-fluid mb-4 pt-5 border-top"
+                        width="700px" />
+                    <p class="mt-4">
+                        <%- blog.body.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'
+                        ).replace(/\r\n/g, '<br />' ) %>
+                    </p>
                 </div>
-                <% }) %>
+            </div>
+
+            <div class="container mt-4 border-top pt-4">
+                <p class="h4">
+                    Comments <% if (comments.length) { %> (<%= comments.length %>) <% } %>
+                </p>
+
+                <% if (locals.user) { %>
+                <form action="/blog/comment/<%= blog._id %>" method="post">
+                    <div class="my-3">
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="content"
+                            name="content"
+                            placeholder="Comment here..." />
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary">Post</button>
+                </form>
+                <% } else { %>
+                <p class="h4">SignIn To Write Your Comment...</p>
+                <% } %>
+                <div class="mt-4">
+                    <% comments.forEach((comment)=> { %>
+                    <div class="mb-3 d-flex flex-row">
+                        <img
+                            src="<%= comment.createdBy.profileImageUrl %>"
+                            alt="Profile Image"
+                            class="img-fluid rounded-circle"
+                            width="40px" />
+                        <span class="ps-3">
+                            <p class="mb-0"><strong> <%= comment.createdBy.fullName %> </strong></p>
+                            <p class="mb-0"><%= comment.content %></p>
+                        </span>
+                    </div>
+                    <% }); %>
+                </div>
             </div>
         </div>
-        
 
-        <%- include('./partials/scripts.ejs') %>
+        <%- include('./partials/scripts') %>
     </body>
 </html>
-

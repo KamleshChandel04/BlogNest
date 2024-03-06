@@ -7,7 +7,7 @@ function createToken(user) {
         _id: user._id,
         name : user.fullName,
         email: user.email,
-        profileImageURL: user.profileImageUrl,
+        profileImageUrl: user.profileImageUrl,
         role: user.role,
     };
 

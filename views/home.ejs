@@ -2,30 +2,24 @@
 <html lang="en">
     <head>
         <%- include('./partials/head.ejs') %>
-        <title>BlogNest</title>
+        <title>Home | BlogNest</title>
     </head>
     <body>
-        <%- include('./partials/nav.ejs') %>
+        <%- include('./partials/nav') %>
 
-        <div class="container mt-3">
-            <div class="row row-cols-4">
-                <% blogs.forEach(blog => { %>
-                <div class="col">
-                    <div class="card col" style="width: 18rem">
-                        <img
-                            class="card-img-top"
-                            src="<%= blog.coverImageURL || '../public/images/No Post.png'  %>"
-                            alt="No Post" />
-                        <div class="card-body">
-                            <h5 class="card-title"><%= blog.title %></h5>
-                            <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
-                        </div>
+        <div class="container my-4">
+            <div class="d-flex flex-wrap">
+                <% blogs.forEach((blog)=> { %>
+                <div class="card m-3 flex-item" style="width: 18rem">
+                    <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="cover-image" />
+                    <div class="card-body">
+                        <h5 class="card-title"><%= blog.title %></h5>
+                        <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
                     </div>
                 </div>
                 <% }) %>
             </div>
         </div>
-
-        <%- include('./partials/scripts.ejs') %>
+        <%- include('./partials/scripts') %>
     </body>
 </html>
